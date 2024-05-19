@@ -1,0 +1,75 @@
+.logo-containers {
+    width: 82em; 
+    height: 31.25em; 
+    background: url('img/download.jpeg') no-repeat center/cover, 
+                linear-gradient(to bottom, rgba(0, 0, 0, 0), black);
+    position: relative;
+    margin-left: 50px;
+    padding-bottom: 10px;
+    
+}
+
+.brands-desc-cont{
+    position: absolute;
+    bottom: 100px;
+    left: 50px;
+    border-left: 2px white;
+}
+
+.brands{
+    color: white;
+    font-size: 3em;
+    border-left: 2px solid #cccccc;
+}
+
+.brands-desc{
+    
+    color: darkslategrey;
+   
+}
+
+.brands-container{
+    display: flex;
+    margin-left: 50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.brand{
+    position: relative;
+}
+
+.brands-img{
+    width:300px;
+    padding: 10px;
+} 
+
+.brand-title{
+   color: white;
+   position: absolute;
+   top: 70px;
+   left: 10%;
+   align-self: center;
+   opacity: 0;
+}
+
+.brand:hover .brands-img{
+    opacity: 0.5;
+}
+
+.brand:hover .brand-title{
+    opacity: 1;
+}
+
+.more{
+    position: absolute;
+    right: 0;
+    border: solid 2px white;
+    background-color: transparent;
+    color: white;
+    bottom: 20px;
+    opacity: 0;
+}
+
+.brand:hover .more{
+    opacity: 1;  
+}
