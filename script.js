@@ -8,56 +8,71 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 const movieArrows = document.querySelectorAll(".movie-arrow");
-const gameArrows = document.querySelectorAll(".game-arrow");
 const movieLists = document.querySelectorAll(".movie-list");
+const gameArrows = document.querySelectorAll(".game-arrow");
 const gameLists = document.querySelectorAll(".game-list");
 
-movieArrows.forEach((arrow, i) => {
-    const itemNumber = movieLists[i].querySelectorAll("img").length;
-    let clickCounter = 0;
-    arrow.addEventListener("click", () => {
-        clickCounter++;
-        if (itemNumber - (4 + clickCounter) >= 0) {
-            const currentTransform = window.getComputedStyle(movieLists[i]).transform;
-            const currentTranslateX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
-            movieLists[i].style.transform = `translateX(${currentTranslateX - 300}px)`;
-        } else {
-            movieLists[i].style.transform = "translateX(0)";
-        }
-    });  
-});
-
-gameArrows.forEach((arrow, i) => {
-    const itemNumber = gameLists[i].querySelectorAll("img").length;
-    let clickCounter = 0;
-    arrow.addEventListener("click", () => {
-        clickCounter++;
-        if (itemNumber - (4 + clickCounter) >= 0) {
-            const currentTransform = window.getComputedStyle(gameLists[i]).transform;
-            const currentTranslateX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
-            gameLists[i].style.transform = `translateX(${currentTranslateX - 300}px)`;
-        } else {
-            gameLists[i].style.transform = "translateX(0)";
-        }
-    });  
-});
-
-
-function openDescription(button) {
-    var movieItem = button.parentElement;
-    var description = movieItem.querySelector('.description');
-    description.style.display = 'flex';
-}
-
-window.onclick = function(event) {
-    var descriptions = document.querySelectorAll('.description');
-    descriptions.forEach(function(description) {
-        var descriptionContent = description.querySelector('.description-content');
-        if (event.target === description) {
-            description.style.display = 'none';
-        }
+const handleArrowClick = (arrows, lists) => {
+    arrows.forEach((arrow, i) => {
+        const itemNumber = lists[i].querySelectorAll("img").length;
+        let clickCounter = 0;
+        arrow.addEventListener("click", () => {
+            const itemsVisible = Math.floor(lists[i].offsetWidth / 300); // Number of items visible in the container
+            clickCounter++;
+            if (clickCounter + itemsVisible > itemNumber) {
+                clickCounter = 0;
+                lists[i].style.transform = "translateX(0)";
+            } else {
+                const currentTransform = window.getComputedStyle(lists[i]).transform;
+                const currentTranslateX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
+                lists[i].style.transform = `translateX(${currentTranslateX - 300}px)`;
+            }
+        });
     });
 };
+
+handleArrowClick(movieArrows, movieLists);
+handleArrowClick(gameArrows, gameLists);
+
+
+
+const buttons = document.querySelectorAll('.movie-list-item-button');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                // Find the corresponding description element
+                const description = this.parentElement.querySelector('.description');
+                
+                // Toggle the display property of the description
+                if (description.style.display === 'block') {
+                    description.style.display = 'none';
+                } else {
+                    // Close all open descriptions
+                    document.querySelectorAll('.description').forEach(desc => {
+                        desc.style.display = 'none';
+                    });
+                    description.style.display = 'block';
+                }
+
+                // Stop event propagation to prevent triggering the document click event
+                event.stopPropagation();
+            });
+        });
+
+        // Close description when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.description').forEach(description => {
+                description.style.display = 'none';
+            });
+        });
+
+        // Prevent closing the description when clicking inside the description
+        document.querySelectorAll('.description').forEach(description => {
+            description.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        });
+
 
 
 
